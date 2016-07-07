@@ -1,0 +1,9 @@
+.DS_Store
+*.toc
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*.vrb
+*.synctex.gz
