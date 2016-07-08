@@ -173,6 +173,27 @@ CUDAサポートがある。CUDAとはNVIDIAのGPUの汎用計算環境で、GPU
 \end{frame}
 
 \begin{frame}{応用例1}
+content loss
+\begin{equation}
+\mathcal{L}_{content}(\vec{p}, \vec{x}, l)=\frac{1}{2}\sum_{i,j}^{}(F_{ij}^{l}-P_{ij}^{l})^2
+\end{equation}
+style loss
+\begin{equation}
+G_{ij}^{l}=\sum_{k}^{}F_{ik}^{l}F_{jk}^{l}
+\end{equation}
+\begin{equation}
+E_{l}=\frac{1}{4N_{l}^{2}M_{l}^{2}}\sum_{i,j}^{}(G_{ij}^{l}A_{ij}^{l})^2
+\end{equation}
+\begin{equation}
+\mathcal{L}_{style}(\vec{a}, \vec{x})=\sum_{l=0}^{L}w_{l}E_{l}
+\end{equation}
+loss
+\begin{equation}
+\mathcal{L}_{total}(\vec{p}, \vec{a}, \vec{x})=\alpha\mathcal{L}_{content}(\vec{p}, \vec{x})+\beta\mathcal{L}_{style}(\vec{a}, \vec{x})
+\end{equation}
+\end{frame}
+
+\begin{frame}{応用例1}
 \includegraphics[clip,width=1.5cm]{image/chainer_logo.png}
 \begin{block}{画風を変換するアルゴリズム}
 スタイル画像とスタイルを適用したい画像を用意する。\footnote[frame]{https://github.com/mattya/chainer-gogh に従って画像のスタイル適用を試しています。}
@@ -246,6 +267,24 @@ CUDAサポートがある。CUDAとはNVIDIAのGPUの汎用計算環境で、GPU
 ``Perceptual Losses for Real-Time Style Transfer and Super-Resolution''\footnote[frame]{http://arxiv.org/abs/1603.08155}
 このスライドではVGGネットワーク\footnote[frame]{http://arxiv.org/pdf/1409.1556}を用いた結果を提示する。\footnote[frame]{https://github.com/yusuketomoto/chainer-fast-neuralstyle に従って画像のスタイル適用を試しています。}
 \end{block}
+\end{frame}
+
+\begin{frame}{応用例2}
+feature reconstruction loss(content loss)
+\begin{equation}
+l_{feat}^{\phi,j}(\hat{y},y)=\frac{1}{C_{j}H_{j}W_{j}}\|\phi_{j} (\hat{y})-\phi_{j}(y)\|_{2}^{2}
+\end{equation}
+style reconstruction loss(style loss)
+\begin{equation}
+G_{j}^{\phi}(x)_{c,c^{\prime}}=\frac{1}{C_{j}H_{j}W_{j}}\sum_{h=1}^{H_{j}}\sum_{w=1}^{W_{j}}\phi_{j}(x)_{h,w,c}\phi_{j}(x)_{h,w,c^{\prime}}
+\end{equation}
+\begin{equation}
+l_{style}^{\phi,j}(\hat{y},y)=\|G_{j}^{\phi}(\hat{y})-G_{j}^{\phi}(y)\|_{F}^{2}
+\end{equation}
+total loss
+\begin{equation}
+\hat{y}=\arg \min_{y}\lambda_{c}l_{feat}^{\phi,j}(y,y_{c})+\lambda_{s}l_{style}^{\phi,J}(y,y_{s})+\lambda_{TV}l_{TV}(y)
+\end{equation}
 \end{frame}
 
 % Set font size for lstlisting.
